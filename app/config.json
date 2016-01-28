@@ -1,0 +1,9 @@
+{
+  "apps" : [{
+    "name"        : "chatapp",
+    "script"      : "bin/www",
+    "watch"       : ["../public"],
+    "log_date_format"  : "YYYY-MM-DD HH:mm Z",
+  }]
+}
+
