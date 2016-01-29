@@ -7,9 +7,13 @@
 		logout:function(msg){
 			console.log('logout',msg)
 		},
-		init:function(uid,nick,room){
-			this.uid = uid;
-			this.nick = nick;
+		send:function(obj){
+			this.socket.emit('message',obj)
+		},
+		init:function(obj){
+			this.uid = obj.uid;
+			this.nick = obj.nick; 
+			this.room = obj.room;
 			//连接websocket后端服务器
 			var url = window.location.href;
 			var ws_url = '';
@@ -34,29 +38,10 @@ console.log('hello')
 			}); 
 
 			//监听消息发送
-			this.socket.on('host_' +this.host+'message_'+room, function(obj){
-				g_html = obj.data;
-				var pattern = /\[ems:([[1-9]+|hua)\]/g;
-				var pattern1= /([1-9]+|hua)/g;
-				var pat_arr =g_html.match(pattern);
-				for(x in pat_arr){
-					var temp_ar = pat_arr[x];
-					var pat1    = temp_ar.match(pattern1);
-					var rep = "<img data='' src='/Public/expression/"+pat1+".gif'>";
-					g_html=g_html.replace(temp_ar,rep);
-				}
-				$('#g_msg_box').prepend(g_html);
-				if(parseInt(obj.is_gift)>0){
-					$('body').prepend(obj.gift_html);
-				}
-				//设置金额
-				if(obj.is_gift){
-					if (uid == obj.uid) {
-						$('#free_money').html(obj.money);
-					}
-				}
+			this.socket.on(this.room+'message', function(obj){
+				console.log('message',obj);
 			});
 		}
 	}
-	chat.init(Math.random(),'kkkk',1)
+	chat.init(user)
 })()
