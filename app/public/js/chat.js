@@ -33,8 +33,8 @@ console.log('hello')
 			}); 
  
 			//监听用户退出
-			this.socket.on('logout'+this.room, function(o){
-				chat.logout(o);
+			this.socket.on(this.room+'logout', function(o){
+				chat.logout(o.uid+' exit');
 			}); 
 
 			//监听消息发送
